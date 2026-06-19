@@ -1,102 +1,72 @@
 package com.uas.hudhasyururi;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 
 public class EditMahasiswaActivity extends AppCompatActivity {
 
-    private EditText etEditNama, etEditNim, etEditJurusan, etEditSemester;
-    private Button btnSimpanPerubahan;
-    private DatabaseHelper db;
-    private String id;
+    // Komponen UI yang sesuai dengan ID XML Anda
+    private TextInputEditText etNim, etNama, etJurusan, etSemester;
+    private MaterialButton btnSimpan;
+    private DatabaseHelper dbHelper;
+    private String idMahasiswa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Menghubungkan secara eksplisit ke XML edit data yang Anda kirim
         setContentView(R.layout.activity_edit_mahasiswa);
 
-        db = new DatabaseHelper(this);
-        Context context = this;
-        String pkg = context.getPackageName();
+        dbHelper = new DatabaseHelper(this);
 
-        // 1. Inisialisasi komponen Input secara dinamis
-        int idNama = context.getResources().getIdentifier("etEditNama", "id", pkg);
-        if (idNama == 0) idNama = context.getResources().getIdentifier("etNama", "id", pkg);
-        if (idNama != 0) etEditNama = findViewById(idNama);
+        // Inisialisasi ID komponen sesuai dengan isi XML Anda
+        etNim = findViewById(R.id.etNim);
+        etNama = findViewById(R.id.etNama);
+        etJurusan = findViewById(R.id.etJurusan);
+        etSemester = findViewById(R.id.etSemester);
+        btnSimpan = findViewById(R.id.btnSimpan);
 
-        int idNim = context.getResources().getIdentifier("etEditNim", "id", pkg);
-        if (idNim == 0) idNim = context.getResources().getIdentifier("etNim", "id", pkg);
-        if (idNim != 0) etEditNim = findViewById(idNim);
+        // Menerima data lama dari intent yang dikirim oleh DetailMahasiswaActivity
+        idMahasiswa = getIntent().getStringExtra("MHS_ID");
+        String nimLama = getIntent().getStringExtra("MHS_NIM");
+        String namaLama = getIntent().getStringExtra("MHS_NAMA");
+        String jurusanLama = getIntent().getStringExtra("MHS_JURUSAN");
+        String semesterLama = getIntent().getStringExtra("MHS_SEMESTER");
 
-        int idJurusan = context.getResources().getIdentifier("etEditJurusan", "id", pkg);
-        if (idJurusan == 0) idJurusan = context.getResources().getIdentifier("etJurusan", "id", pkg);
-        if (idJurusan != 0) etEditJurusan = findViewById(idJurusan);
+        // Menampilkan data lama ke dalam form input edit data
+        if (etNim != null) etNim.setText(nimLama);
+        if (etNama != null) etNama.setText(namaLama);
+        if (etJurusan != null) etJurusan.setText(jurusanLama);
+        if (etSemester != null) etSemester.setText(semesterLama);
 
-        int idSemester = context.getResources().getIdentifier("etEditSemester", "id", pkg);
-        if (idSemester == 0) idSemester = context.getResources().getIdentifier("etSemester", "id", pkg);
-        if (idSemester != 0) etEditSemester = findViewById(idSemester);
+        // Aksi tombol "Simpan Data"
+        if (btnSimpan != null) {
+            btnSimpan.setOnClickListener(v -> {
+                String txtNimBaru = etNim.getText().toString().trim();
+                String txtNamaBaru = etNama.getText().toString().trim();
+                String txtJurusanBaru = etJurusan.getText().toString().trim();
+                String txtSemesterBaru = etSemester.getText().toString().trim();
 
-        // KUNCI PERBAIKAN: Mencari ID Tombol secara dinamis agar terhindar dari Compile Error
-        int idTombol = context.getResources().getIdentifier("btnSimpanPerubahan", "id", pkg);
-        if (idTombol == 0) idTombol = context.getResources().getIdentifier("btnSimpan", "id", pkg);
-        if (idTombol == 0) idTombol = context.getResources().getIdentifier("btnUpdate", "id", pkg);
-        if (idTombol == 0) idTombol = context.getResources().getIdentifier("btnEdit", "id", pkg);
-
-        if (idTombol != 0) {
-            btnSimpanPerubahan = findViewById(idTombol);
-        }
-
-        // Menangkap data lama yang dikirim dari halaman DetailMahasiswaActivity
-        Intent intent = getIntent();
-        if (intent != null) {
-            id = intent.getStringExtra("id");
-            String namaLama = intent.getStringExtra("nama");
-            String nimLama = intent.getStringExtra("nim");
-            String prodiLama = intent.getStringExtra("prodi");
-            String semesterLama = intent.getStringExtra("semester");
-
-            // Mengisi kotak input dengan data lama tersebut
-            if (etEditNama != null) etEditNama.setText(namaLama);
-            if (etEditNim != null) etEditNim.setText(nimLama);
-            if (etEditJurusan != null) etEditJurusan.setText(prodiLama);
-            if (etEditSemester != null) etEditSemester.setText(semesterLama);
-        }
-
-        // Aksi simpan perubahan data ke database
-        if (btnSimpanPerubahan != null) {
-            btnSimpanPerubahan.setOnClickListener(v -> {
-                String namaBaru = etEditNama != null ? etEditNama.getText().toString().trim() : "";
-                String nimBaru = etEditNim != null ? etEditNim.getText().toString().trim() : "";
-                String jurusanBaru = etEditJurusan != null ? etEditJurusan.getText().toString().trim() : "";
-                String semesterBaru = etEditSemester != null ? etEditSemester.getText().toString().trim() : "";
-
-                if (namaBaru.isEmpty() || nimBaru.isEmpty() || jurusanBaru.isEmpty() || semesterBaru.isEmpty()) {
-                    Toast.makeText(EditMahasiswaActivity.this, "Semua kolom data harus diisi!", Toast.LENGTH_SHORT).show();
+                // Validasi agar data tidak kosong
+                if (txtNimBaru.isEmpty() || txtNamaBaru.isEmpty() || txtJurusanBaru.isEmpty() || txtSemesterBaru.isEmpty()) {
+                    Toast.makeText(this, "Semua data form wajib diisi!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                // Mengupdate data ke database SQLite
-                boolean isUpdated = db.updateMahasiswa(id, nimBaru, namaBaru, jurusanBaru, semesterBaru);
-                if (isUpdated) {
-                    Toast.makeText(EditMahasiswaActivity.this, "Data Berhasil Diperbarui", Toast.LENGTH_SHORT).show();
+                // Menjalankan fungsi update data lama berdasarkan ID (TIDAK MEMBUAT DATA BARU)
+                boolean isUpdated = dbHelper.updateMahasiswa(idMahasiswa, txtNimBaru, txtNamaBaru, txtJurusanBaru, txtSemesterBaru);
 
-                    // Kembali ke halaman Daftar Mahasiswa secara bersih
-                    Intent backIntent = new Intent(EditMahasiswaActivity.this, DaftarMahasiswaActivity.class);
-                    backIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(backIntent);
-                    finish();
+                if (isUpdated) {
+                    Toast.makeText(this, "Data berhasil diperbarui!", Toast.LENGTH_SHORT).show();
+                    finish(); // Menutup halaman edit dan kembali ke dashboard utama
                 } else {
-                    Toast.makeText(EditMahasiswaActivity.this, "Gagal Memperbarui Data", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Gagal memperbarui data!", Toast.LENGTH_SHORT).show();
                 }
             });
-        } else {
-            // Toast pengingat jika semua variasi ID tombol di atas tidak ada yang cocok di XML Anda
-            Toast.makeText(this, "Peringatan: ID Tombol Simpan tidak ditemukan di XML Edit!", Toast.LENGTH_LONG).show();
         }
     }
 }

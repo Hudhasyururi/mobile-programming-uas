@@ -3,53 +3,56 @@ package com.uas.hudhasyururi;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
 
 public class TambahMahasiswaActivity extends AppCompatActivity {
 
-    private EditText etNama, etNim, etJurusan, etSemester;
-    private Button btnSimpan;
-    private DatabaseHelper db;
-    private String activeUser;
+    private TextInputEditText etTambahNim, etTambahNama, etTambahJurusan, etTambahSemester;
+    private MaterialButton btnTambahSimpan;
+    private DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tambah_mahasiswa);
 
-        db = new DatabaseHelper(this);
+        dbHelper = new DatabaseHelper(this);
 
-        SharedPreferences prefs = getSharedPreferences("UserPrefs", Context.MODE_PRIVATE);
-        activeUser = prefs.getString("session_username", "");
+        etTambahNim = findViewById(R.id.etTambahNim);
+        etTambahNama = findViewById(R.id.etTambahNama);
+        etTambahJurusan = findViewById(R.id.etTambahJurusan);
+        etTambahSemester = findViewById(R.id.etTambahSemester);
+        btnTambahSimpan = findViewById(R.id.btnTambahSimpan);
 
-        etNama = findViewById(R.id.etNama);
-        etNim = findViewById(R.id.etNim);
-        etJurusan = findViewById(R.id.etJurusan);
-        etSemester = findViewById(R.id.etSemester);
-        btnSimpan = findViewById(R.id.btnSimpan);
+        if (btnTambahSimpan != null) {
+            btnTambahSimpan.setOnClickListener(v -> {
+                String nim = etTambahNim.getText().toString().trim();
+                String nama = etTambahNama.getText().toString().trim();
+                String jurusan = etTambahJurusan.getText().toString().trim();
+                String semester = etTambahSemester.getText().toString().trim();
 
-        btnSimpan.setOnClickListener(v -> {
-            String nama = etNama.getText().toString().trim();
-            String nim = etNim.getText().toString().trim();
-            String jurusan = etJurusan.getText().toString().trim();
-            String semester = etSemester.getText().toString().trim();
+                if (nim.isEmpty() || nama.isEmpty() || jurusan.isEmpty() || semester.isEmpty()) {
+                    Toast.makeText(this, "Semua form wajib diisi!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-            if (nama.isEmpty() || nim.isEmpty() || jurusan.isEmpty() || semester.isEmpty()) {
-                Toast.makeText(TambahMahasiswaActivity.this, "Semua data wajib diisi!", Toast.LENGTH_SHORT).show();
-                return;
-            }
+                // 🔥 BACA SESI: Cari tahu siapa nama akun yang sedang menginput data ini
+                SharedPreferences sharedPref = getSharedPreferences("SesiUser", Context.MODE_PRIVATE);
+                String userLogin = sharedPref.getString("USERNAME_LOGIN", "umum");
 
-            // UPDATE: Memasukkan parameter semester ke fungsi insert
-            boolean isInserted = db.insertMahasiswa(nama, nim, jurusan, semester, activeUser);
-            if (isInserted) {
-                Toast.makeText(TambahMahasiswaActivity.this, "Data Berhasil Disimpan", Toast.LENGTH_SHORT).show();
-                finish();
-            } else {
-                Toast.makeText(TambahMahasiswaActivity.this, "Gagal Menyimpan Data", Toast.LENGTH_SHORT).show();
-            }
-        });
+                // Simpan data mahasiswa ke SQLite bersama informasi pemiliknya
+                boolean isInserted = dbHelper.addMahasiswa(nim, nama, jurusan, semester, userLogin);
+
+                if (isInserted) {
+                    Toast.makeText(this, "Data berhasil disimpan ke akun: " + userLogin, Toast.LENGTH_SHORT).show();
+                    finish(); // Tutup halaman input dan kembali ke dashboard
+                } else {
+                    Toast.makeText(this, "Gagal menyimpan data!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 }

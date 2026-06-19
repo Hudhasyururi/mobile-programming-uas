@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F4F6F8"
-    android:fillViewport="true">
+    android:fillViewport="true"
+    android:background="#F9FAFB">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -16,8 +16,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Form Data Mahasiswa"
-            android:textColor="#0F172A"
+            android:text="Edit Data Mahasiswa"
+            android:textColor="#111827"
             android:textSize="28sp"
             android:textStyle="bold" />
 
@@ -26,28 +26,35 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="32dp"
-            android:text="Silakan isi atau perbarui informasi di bawah ini."
-            android:textColor="#64748B"
-            android:textSize="15sp" />
+            android:text="Perbarui data lama mahasiswa di bawah ini."
+            android:textColor="#4B5563"
+            android:textSize="14sp" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:hint="Nomor Induk Mahasiswa (NIM)"
+            android:textColorHint="#6B7280"
             app:boxCornerRadiusBottomEnd="12dp"
             app:boxCornerRadiusBottomStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
             app:boxCornerRadiusTopStart="12dp"
-            app:boxStrokeColor="#3B82F6">
+            app:boxStrokeColor="#2563EB"
+            app:boxStrokeWidth="1dp"
+            app:boxStrokeWidthFocused="2dp"
+            app:hintTextColor="#2563EB">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etNim"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="Nomor Induk Mahasiswa (NIM)"
                 android:inputType="number"
-                android:textColor="#0F172A" />
+                android:padding="16dp"
+                android:textColor="#111827"
+                android:textColorHint="#6B7280"
+                android:textSize="15sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -55,19 +62,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:hint="Nama Lengkap"
+            android:textColorHint="#6B7280"
             app:boxCornerRadiusBottomEnd="12dp"
             app:boxCornerRadiusBottomStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
             app:boxCornerRadiusTopStart="12dp"
-            app:boxStrokeColor="#3B82F6">
+            app:boxStrokeColor="#2563EB"
+            app:boxStrokeWidth="1dp"
+            app:boxStrokeWidthFocused="2dp"
+            app:hintTextColor="#2563EB">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etNama"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="Nama Lengkap"
                 android:inputType="textPersonName"
-                android:textColor="#0F172A" />
+                android:padding="16dp"
+                android:textColor="#111827"
+                android:textColorHint="#6B7280"
+                android:textSize="15sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -75,19 +89,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:hint="Program Studi / Jurusan"
+            android:textColorHint="#6B7280"
             app:boxCornerRadiusBottomEnd="12dp"
             app:boxCornerRadiusBottomStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
             app:boxCornerRadiusTopStart="12dp"
-            app:boxStrokeColor="#3B82F6">
+            app:boxStrokeColor="#2563EB"
+            app:boxStrokeWidth="1dp"
+            app:boxStrokeWidthFocused="2dp"
+            app:hintTextColor="#2563EB">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etJurusan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="Program Studi / Jurusan"
                 android:inputType="text"
-                android:textColor="#0F172A" />
+                android:padding="16dp"
+                android:textColor="#111827"
+                android:textColorHint="#6B7280"
+                android:textSize="15sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -95,31 +116,40 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="32dp"
-            android:hint="Semester"
+            android:textColorHint="#6B7280"
             app:boxCornerRadiusBottomEnd="12dp"
             app:boxCornerRadiusBottomStart="12dp"
             app:boxCornerRadiusTopEnd="12dp"
             app:boxCornerRadiusTopStart="12dp"
-            app:boxStrokeColor="#3B82F6">
+            app:boxStrokeColor="#2563EB"
+            app:boxStrokeWidth="1dp"
+            app:boxStrokeWidthFocused="2dp"
+            app:hintTextColor="#2563EB">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etSemester"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="Semester"
                 android:inputType="number"
-                android:textColor="#0F172A" />
+                android:padding="16dp"
+                android:textColor="#111827"
+                android:textColorHint="#6B7280"
+                android:textSize="15sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSimpan"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:text="Simpan Data"
+            android:text="SIMPAN PERUBAHAN"
             android:textColor="#FFFFFF"
-            android:textSize="16sp"
+            android:textSize="15sp"
             android:textStyle="bold"
             app:backgroundTint="#2563EB"
-            app:cornerRadius="12dp" />
+            app:cornerRadius="12dp"
+            app:elevation="0dp"
+            android:stateListAnimator="@null"/>
 
     </LinearLayout>
 </ScrollView>

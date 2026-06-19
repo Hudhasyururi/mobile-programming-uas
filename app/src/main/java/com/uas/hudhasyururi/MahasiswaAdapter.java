@@ -1,67 +1,62 @@
 package com.uas.hudhasyururi;
 
-import android.content.Intent;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
-public class MahasiswaAdapter extends RecyclerView.Adapter<MahasiswaAdapter.MahasiswaViewHolder> {
+public class MahasiswaAdapter extends BaseAdapter {
 
-    private ArrayList<Mahasiswa> listMahasiswa;
+    private Context context;
+    private ArrayList<String> listId;
+    private ArrayList<String> listNim;
+    private ArrayList<String> listNama;
+    private ArrayList<String> listJurusan;
+    private ArrayList<String> listSemester;
 
-    public MahasiswaAdapter(ArrayList<Mahasiswa> listMahasiswa) {
-        this.listMahasiswa = listMahasiswa;
-    }
-
-    @NonNull
-    @Override
-    public MahasiswaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Menyambungkan ke layout modern yang baru dibuat
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mahasiswa, parent, false);
-        return new MahasiswaViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull MahasiswaViewHolder holder, int position) {
-        Mahasiswa mhs = listMahasiswa.get(position);
-
-        // Memastikan data terikat ke kolom yang 100% benar
-        holder.tvNama.setText(mhs.getNama());
-        holder.tvNim.setText("NIM: " + mhs.getNim());
-        holder.tvJurusan.setText(mhs.getJurusan());
-        holder.tvSemester.setText("Semester " + mhs.getSemester());
-
-        // Aksi klik untuk masuk ke halaman detail
-        holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(v.getContext(), DetailMahasiswaActivity.class);
-            intent.putExtra("id", mhs.getId());
-            intent.putExtra("nama", mhs.getNama());
-            intent.putExtra("nim", mhs.getNim());
-            intent.putExtra("prodi", mhs.getJurusan());
-            intent.putExtra("semester", mhs.getSemester());
-            v.getContext().startActivity(intent);
-        });
+    public MahasiswaAdapter(Context context, ArrayList<String> listId, ArrayList<String> listNim,
+                            ArrayList<String> listNama, ArrayList<String> listJurusan, ArrayList<String> listSemester) {
+        this.context = context;
+        this.listId = listId;
+        this.listNim = listNim;
+        this.listNama = listNama;
+        this.listJurusan = listJurusan;
+        this.listSemester = listSemester;
     }
 
     @Override
-    public int getItemCount() {
-        return listMahasiswa != null ? listMahasiswa.size() : 0;
+    public int getCount() {
+        return listNama.size();
     }
 
-    public static class MahasiswaViewHolder extends RecyclerView.ViewHolder {
-        TextView tvNama, tvNim, tvJurusan, tvSemester;
+    @Override
+    public Object getItem(int position) {
+        return listNama.get(position);
+    }
 
-        public MahasiswaViewHolder(@NonNull View itemView) {
-            super(itemView);
-            // Mengikat ke ID statis yang baru di item_mahasiswa.xml
-            tvNama = itemView.findViewById(R.id.tvItemNama);
-            tvNim = itemView.findViewById(R.id.tvItemNim);
-            tvJurusan = itemView.findViewById(R.id.tvItemJurusan);
-            tvSemester = itemView.findViewById(R.id.tvItemSemester);
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        if (convertView == null) {
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_mahasiswa, parent, false);
         }
+
+        TextView txtNama = convertView.findViewById(R.id.txtItemNama);
+        TextView txtNim = convertView.findViewById(R.id.txtItemNim);
+        TextView txtDetail = convertView.findViewById(R.id.txtItemDetail);
+
+        // Pasang data ke komponen teks agar terlihat rapi dan terpisah
+        txtNama.setText(listNama.get(position));
+        txtNim.setText("NIM: " + listNim.get(position));
+        txtDetail.setText(listJurusan.get(position) + "  •  Semester " + listSemester.get(position));
+
+        return convertView;
     }
 }

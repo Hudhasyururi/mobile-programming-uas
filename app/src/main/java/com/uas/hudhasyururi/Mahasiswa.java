@@ -2,25 +2,58 @@ package com.uas.hudhasyururi;
 
 public class Mahasiswa {
     private String id;
-    private String nama;
     private String nim;
+    private String nama;
     private String jurusan;
     private String semester;
-    private String owner;
 
-    public Mahasiswa(String id, String nama, String nim, String jurusan, String semester, String owner) {
+    // Constructor Utama (Sesuai dengan urutan pemanggilan di DaftarMahasiswaActivity)
+    public Mahasiswa(String id, String nim, String nama, String jurusan, String semester) {
         this.id = id;
-        this.nama = nama;
         this.nim = nim;
+        this.nama = nama;
         this.jurusan = jurusan;
         this.semester = semester;
-        this.owner = owner;
     }
 
-    public String getId() { return id; }
-    public String getNama() { return nama; }
-    public String getNim() { return nim; }
-    public String getJurusan() { return jurusan; }
-    public String getSemester() { return semester; }
-    public String getOwner() { return owner; }
+    // Getter dan Setter untuk mengakses data
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getNim() {
+        return nim;
+    }
+
+    public void setNim(String nim) {
+        this.nim = nim;
+    }
+
+    public String getNama() {
+        return nama;
+    }
+
+    public void setNama(String nama) {
+        this.nama = nama;
+    }
+
+    public String getJurusan() {
+        return jurusan;
+    }
+
+    public void setJurusan(String jurusan) {
+        this.jurusan = jurusan;
+    }
+
+    public String getSemester() {
+        return semester;
+    }
+
+    public void setSemester(String semester) {
+        this.semester = semester;
+    }
 }
